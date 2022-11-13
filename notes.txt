@@ -1,0 +1,242 @@
+scalar = single thing. E.g. a string or a number is a scalar
+scalar data - value itself
+scalar variable - can store scalar value
+Perl computeswith double-precision floating point values
+There are no integer values internal to Perl - an integer constant in the program is treated as the equivalent floating-point value.
+In Perl a number is just a number.
+
+# Integer Literals
+
+A literal is how you represent a value in your source code. A literal is not the result of a calculation or an I/O operation; it's data that you type directly into your program. Perl allows to add underscores for clarity:
+61298040283768 = 61_298_040_283_768
+
+# Nondecimal Integer Literals
+
+## Octal (base 8) literals start with a leading 0 and use the digits from 0 to 7:
+
+0377 # same as 255 decimal
+0o377 # same as 255 decimal starting with Perl v5.34
+
+## Hexadecimal (base 16) literals start with a leading 0x and use the digits from 0 to 9 and letters from A through F (or through f):
+
+0xff # FF hex, also 255 decimal
+
+## Binary (base 2) literals start with a leading 0b and use only the digits 0 and 1:
+
+0b11111111 # also 255 decimal
+The "leading zero" indicator works only for literals - not for automatic string-to-number conversions.
+Underscores can be used as well:
+0x1377_0B77
+0x50_65_72_7C
+
+# Floating-Point Literals
+
+E.g.:
+1.25
+255.000
+255.0
+7.25e45 # e - exponential notation, 7.25 times 10 to the 45th power
+-6.54e24
+-12e-24
+-1.2E-23 # another way to say that the E may be uppercase
+For hexadecimal floating-point literls e is replaced with p (power-of-2 exponent):
+0x1f.0p3
+
+# Numeric Operators
+
+2 + 3
+5.1 - 2.4
+3 * 12
+14 / 2
+10.2 / 0.3
+10 / 3
+
+10 % 3 = 1 # % is a modulus operator
+10.5 % 3.2 # at first float values are reduced to their integer values, so computes as 10 % 3
+
+2**3 # ** means power, 2**3 equals to 8
+
+# Strings
+
+The shortest possible string has no characters and is called empty string.
+Perl has full support for Unicode. However it doesn't automatically interpret your source as Unicode. It's needed to add the utf8 pragma:
+use utf8;
+
+!A pragma is something that tells the Perl compiler how to act.
+
+Like numbers, strings have a literal representation, which is the way you represent the string in a Perl program. Literal strings come in two different flavors: single-quoted string literals and double-quoted string literals.
+
+## Single-Quoted String Literals
+'fred'
+'' # null string
+To use ' in a string it must be preceeded with backslash:
+'Don\'t let an apostrophe end this string prematurely!'
+'the last character is a backslash: \\'
+'\'\\' # single quote followed by a backslash
+A string can be spreaded out over two (or more) lines. A new line between the single quotes is a newline in the string:
+'hello
+there'
+
+# \n is not interpreted in single quotes
+'hello\nthere' # hello\nthere
+Only when the backslash is followed by another backslash or a single quote does it have special meaning.
+
+## Double-Quoted String Literals
+"hello world\n" # hello world and a newline
+"The last character of this string is a quote mark: \""
+"coke\tsprite" # coke, a tab, and sprite
+"\x{2668}" # Unicode HOT SPRINGS character code point
+"\N{SNOWMAN}" # Unicode Snowman by name
+"barney" = 'barney'
+
+The backslash can precede many characters to mean something other than their literal representation (generally called a backslash escape). E.g.:
+\007 # Any octal ASCII vale (here, 007 = bell)
+\a # Bell
+\b # Backspace
+\cC # A "control" character (here, Ctrl-C)
+\e # Escape (ASCII escape character)
+\E # End \F, \L, \U or \Q
+\f # Formfeed
+\F # Unicode case-fold all following letters until \E
+\l # Lowercase next letter
+\L # Lowercase all following letters until \E
+\N{CHARACTER NAME} # Any Unicode code point, by name
+\Q # Quote nonword characters by adding a backslash until \E
+\r # Return
+\t # Tab
+\u # Uppercase next letter
+\U # Uppercase all following letters until \E
+\x7f # Any two-digit, hex ASCII value (here, 7f = delete)
+\x{2744} # Any hex Unicode code point (here, U+2744 = snowflake)
+\\ # Backslash
+\" # Double quote
+
+Another feature of double-quoted strings is that they are variable interpolated, meaning that some variable names within the string are replaced with their current values when the strings are used.
+
+## String Operators
+Concatenation or join is done with . operator
+"hello" . "world" # same as "helloworld"
+"hello" . ' ' . "world" # same as 'hello world'
+'hello world' . '\n' # same as "hello world\n"
+### String repetition
+String repetition is done with single lowercase letter x.
+"fred" x 3 # "fredfredfred"
+"barney" x (4+1) # "barney" 5 times
+5 x 4.8 # is really "5" x 4, which is "5555"
+
+## Automatic Conversion Between Numbers and Strings
+Perl automatically converts between numbers and strings as needed based on the operator.
+E.g.:
+"12" * "3" # gives 36
+"12fred34" * "3" # gives 36 without any complaints
+Something that can't be converted to a number, converts to zero. E.g.:
+"fred" * 3 # gives 0
+but:
+0377 # that's octal for 255 decimal
+'0377' # that's 377 decimal
+Another example:
+"Z" . "5" * 7 # same as "Z" . 35, or "Z35"
+
+## Perl's Built-in Warnings
+Perl can be told to warn you when it sees something suspicious going on in the program.
+#!/usr/bin/perl
+use warnings;
+
+Or -w can be used on the command line, e.g.
+perl -w my_program
+
+Another way is to specify it in the sh-bang line:
+#!/usr/bin/perl -w
+
+For longer description of the problem diagnostics pragma can be used:
+use diagnostics;
+
+A further optimization can be had by using one of Perl's command-line options, -M, to load the pragma only when needed instead of editing the source code each time to enable and disable diagnostics:
+perl -Mdiagnostics ./my_program
+perl -Mwarnings ./my_program
+
+## Interpreting Nondecimal Numerals
+If you have a string that represents a number as another base, you can use the hex() or oct() function to interpret those numbers correctly.
+hex('DEADBEEF') # 3_735_928_559
+hex('0xDEADBEEF') # 3_735_928_559
+oct('0377') # 255
+oct('0o377') # 255
+oct('377') # 255
+oct('0xDEADBEEF') # 3_735_928_559 decimal, saw leading 0x
+oct('0b1101') # 13 decimal, saw leading 0b
+oct("0b$bits") # convert $bits from binary
+
+hex( 10 ) # decimal 10, converted to "10", then decimal 16
+hex( 0x10 ) # hex 10, converted to "16", then decimal 22
+
+## Scalar Variables
+A variable is a name for a container that holds one or more values. A Scalar variable holds exactly one value. Scalar variable names begin with a dollar sign, called the sigil, followed by a Perl identifier: a letter or underscore, and then possibly more letters, or digits, or underscores.
+Uppercase and lowercase letters are distinct. the variable $Fred is a different variable from $fred. Another example of different variables:
+$name
+$Name
+$NAME
+
+The sigil isn't telling you the variable type; it's telling you how you are accessing that variable. That means that with $ sigil array can be accessed even though it's not scalar or single item.
+
+## Choosing Good Variable Names
+Most variable names in Perl programs are all lowercase with underscores. In a few special cases, uppercase letters are used. Using all caps ($ARGV) generally indicates that there's something special about that variable.
+
+## Scalar Assignment
+$fred = 17;
+$barney = 'hello';
+$barney = $fred + 3; # assigns 20 to $barney
+
+## Compound Assignment Operators
+$fred += 5;
+$barney *= 3;
+$str .= " "; # equals to $str = $str . " ";
+$fred **= 3;
+
+## Output with print
+print "hello world\n";
+print "The answer is ";
+print 6 * 7;
+print ".\n";
+print "The answer is ", 6 * 7, ".\n";
+
+## Interpolation of Scalar Variables into Strings
+When a string literal is double-quoted, it is subject to variable interpolation.
+$meal = "brontosaurus steak";
+$barney = "fred ate $meal"; # fred ate brontosaurus steak
+$barney = 'fred ate a ' . $meal; # another way to write that
+
+Variable interpolation is also known as double-quote interpolation.
+If the scalar variable has never been giben a value, the empty string is used instead:
+$barney = "fred ate a $meat"; # "fred ate a "
+To print a dollar sign with double quotes it's needed to use a backslash:
+$barney = "fred ate a \$meat.\n" # gives "fred ate a $meat."
+Alternatively, you could avoid using double quotes around the problematic part of the string:
+print 'fred ate a $meat.' . "\n" ; gives the same output.
+Perl provides a delimiter for the variable name in a manner similar to the shell.
+$what = "brontosaurus steak";
+$n = 3;
+print "fred ate $n ${what}s.\n"
+print "fred ate $n $what" . "s.\n" # does the same thing
+
+## Creating Characters by Code Point
+Sometinges you want to create strings with characters that may not appear on your keyboard. Sometimes it's easier to create them by their code point with the chr() function:
+$alef = chr( 0x05D0 );
+$alpha = chr ( hex('03B1') );
+$omega = chr( 0x03C9 );
+You can go the other way with the ord() function, which turns a character into its code point:
+$code_point = ord( 'א' );
+
+## Operator Precedence and Associativity
+Operator precedence determines which operations in a complex group happen first. E.g. in the expression like 2+3*4. Perl does the multiplication first. Multiplication has a higher precedence than addition. Parentheses have the highest precedence.
+## Comparison Operators
+Perl has logical comparison operators that may remind you of algebra: < <= == >= > !=.
+To compare strings, Perl has an equivalent set of strings comparison operators that look like funny little words: lt, le, eq, ge, gt and ne.
+35 != 30 + 5 # false
+35 == 35.0 # true
+'35' eq '35.0' # false
+'fred' lt 'barney' # false
+'fred' lt 'free' # true
+'fred' eq "fred" # true
+'fred' eq 'Fred' # false
+' ' gt '' # true
+
