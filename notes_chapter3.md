@@ -22,7 +22,7 @@ The subscript may be any expression that gives a numeric value. If it's not an i
 $number = 2.71828;
 print $fred[$number - 1]; # Same as printing $fred[1]
 ```
-If the subscript indicates an element that would be beyond the end of the array, the corresponding value will be _undef_.
+If the subscript indicates an element that would be beyond the end of the array, the corresponding value will be `undef`.
 ```
 $blank = $fred[ 142_857 ]; # unused array element gives undef
 $blanc = $mel; # unused scalar $mel also gives undef
