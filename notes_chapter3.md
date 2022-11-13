@@ -30,4 +30,16 @@ $blanc = $mel; # unused scalar $mel also gives undef
 
 Special Array Indices
 ---------------------
+If Perl needs to create the intervening elements, it creates them as `undef` values:
+```
+$rocks[0] = 'bedrock';
+$rocks[1] = 'slate';
+$rocks[99] = 'schist'; # now there are 97 undef elements.
+```
+To get value of the last element index in an array. It can be done as easy as `$#rocks`:
+```
+$end = $#rocks; # assignes 99 to $end
+$rocks[$#rocks] = 'hard rock';
+```
+Values of elements in array can be accessed with negitve indexes, where -1 - last element, -2 - element before last one etc. That means that `$rocks[$#rocks]` is the same as `$rocks[-1]`.
 
