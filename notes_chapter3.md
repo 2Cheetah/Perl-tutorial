@@ -43,3 +43,18 @@ $rocks[$#rocks] = 'hard rock';
 ```
 Values of elements in array can be accessed with negitve indexes, where -1 - last element, -2 - element before last one etc. That means that `$rocks[$#rocks]` is the same as `$rocks[-1]`.
 
+List Literals
+-------------
+A _list literal_ is a list represented by values inside parenthesis. E.g.:
+```
+(1, 2, 3) # list of three numbers
+(1, 2, 3, ) # the same list, last comma is ignores
+('fred', 1) # list of two values
+( ) # empty list
+```
+In case a list must store a sequence, it can be done as follows:
+```
+(1..100) # list of 100 integers
+(1.3..100.2) # the same list, both values are truncated
+(0, 2..6, 10, 12) # same as (0, 2, 3, 4, 5, 6, 10, 12)
+```
