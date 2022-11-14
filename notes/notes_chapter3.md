@@ -162,4 +162,24 @@ unshift @array, 4; # @array now has (4, 5)
 unshift @array, @others; # @array now has (1, 2, 3, 4, 5)
 ```
 The same as `pop`, `shift` returns `undef` from an empty array.
+The `splice` Operator
+---------------------
+The `push-pop` and `shift-unshift` operators work with the ends of an array. To perform the same operation in the middle of an array it's needed to use `splice` operator. It takes up to four arguments, two of which are optional.
+```
+@array = qw ( pebbles dino fred barney betty );
+@removed = splice @array, 2; # remove fred and everything after
+# @removed is qw(fred barney betty)
+# @array is qw(pebbles dino)
+```
+Third argument specifies the length.
+```
+@array = qw( pebbles dino fred barney betty );
+@removed = splice @array, 1, 2 # @removed = qw( dino fred )
+# @array is now qw( pebbles barney betty )
+```
+The fourth argument is a replacement list. It doesn't have to be the same size as removed list.
+```
+@array = qw( pebbles dino fred barney betty );
+@removed = splice @array, 1, 0, qw( wilma ); # removes nothing, adds qw( wilma ). Eventually, @array = qw( pebbles wilma dino fred barney betty )
+```
 
