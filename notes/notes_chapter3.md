@@ -69,3 +69,34 @@ The elements of list literal not necesserily must be constants, they can be expr
 ($m..$n) # range from $m to $n
 (0..$#rocks)
 ```
+The `qw` Shortcut
+-----------------
+`qw` is designed to create a list with strings, taking out necessity to write a lot of quotes:
+```
+("fred", "bread", "betty", "shmetty")
+qw( fred bread betty shmetty ) # creates the same list
+```
+`qw` stands for _quoted words_ or _quoted by whitespace_. Perl lets use any delimiter instead of parenthesis:
+```
+qw! fred bread betty shmetty !
+qw/ fred bread betty shmetty /
+qw# fred bread betty shmetty # # like a comment
+```
+Another option is to use "left" and "right" delimiters, not necessarily parenthesis:
+```
+qw< fred bread betty shmetty >
+qw[ fred bread betty shmetty ]
+qw{ fred bread betty shmetty }
+```
+In case it is needed to include a symbol which is the same as delimiter, it can be added with a help of `backslash`:
+```
+qw! fred bread\! betty shmetty ! # fred bread! betty shmetty
+```
+The `qw` is useful for example to store a Unix filenames, like this:
+```
+qw {
+    /usr/home/words
+    /home/rootbeer/.ispell_english
+}
+```
+
