@@ -129,4 +129,20 @@ Copying an array to another array is still list assignment.
 ```
 @copy = @quarry; # copy a list from one array to another
 ```
+The pop operator takes the last element off of an array and returns it:
+```
+@array = 5..9;
+#fred = pop(@array); # $fred gets 9, @array now has (5, 6, 7, 8)
+$barney = pop @array; # $barney gets 8, @array now has (5, 6, 7)
+pop @array; # @array now has (5, 6). (The 7 is discarded.)
+```
+The last example uses pop in a _void context_, which is a fancy way of saying the return value isn't going anywhere. If the array is empty, `pop` returns `undef`.
+The converse operation is `push`, which adds an element (or a list of elements) to the end of an array:
+```
+push(@array, 0); # @array now has (5, 6, 0)
+push @array, 8; # @array now has (5, 6, 0, 8)
+push @array, 1..10; # @array now has those 10 new elements;
+@others = qw/ 9 0 2 1 0 /;
+push @array, @others; # @array now has those five new elements (19 total)
+```
 
