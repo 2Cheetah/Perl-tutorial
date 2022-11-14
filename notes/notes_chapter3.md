@@ -99,4 +99,34 @@ qw {
     /home/rootbeer/.ispell_english
 }
 ```
+List Assignment
+---------------
+In the same manner scalar values can be assigned to variables, list values can be assigned to list variables:
+```
+($fred, $barney, $dino) = ("flinstone", "rubble", undef)
+```
+List on the right side is being evaluated first. That allows to easy change values of list items as follows:
+```
+($fred, $barney) = ($barney, $fred); # swap the values
+($betty[0], $betty[1]) = ($betty[1], $betty[0]);
+```
+In case amount of variables in the list on the left is more than assigned values on the right, `undef` value is assigned to the variables without values. In case amount of values in the list on the right side is more than on the left side, excessive values are omitted.
+```
+($fred, $barney) = qw< flinstone rubble slate granite >; # two ignored items
+($wilma, $dino) = qw[flinstone]; # $dino gets undef
+```
+To refer to an entire array `@` notation is used:
+```
+@rocks = qw/ bedrock slate lava /;
+@tiny = ( ); # the empty list
+@giant = 1..1e5; # a list with 100_000 elements
+@stuff = (@giant, undef, @giant); # a list with 200_001 elements
+$dino = "granite";
+@quarry = (@rocks, "crushed rock", @tiny, $dino);
+```
+An array expands the to the list it contains. Array can contain only scalars, not arrays.
+Copying an array to another array is still list assignment.
+```
+@copy = @quarry; # copy a list from one array to another
+```
 
