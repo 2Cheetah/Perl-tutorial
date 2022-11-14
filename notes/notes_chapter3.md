@@ -129,6 +129,8 @@ Copying an array to another array is still list assignment.
 ```
 @copy = @quarry; # copy a list from one array to another
 ```
+The `pop` and `push` Operators
+------------------------------
 The pop operator takes the last element off of an array and returns it:
 ```
 @array = 5..9;
@@ -145,4 +147,19 @@ push @array, 1..10; # @array now has those 10 new elements;
 @others = qw/ 9 0 2 1 0 /;
 push @array, @others; # @array now has those five new elements (19 total)
 ```
+The `shift` and `unshift` Operators
+-----------------------------------
+Similarly to `pop` and `push`, `shift` and `unshift` operators perform operations with the beginning of the array.
+```
+@array = qw# dino fred barney #;
+$m = shift(@array); # $m gets "dino", @array now has ("fred", "barney")
+$n = shift @array; # $n gets "fred", @array now has ("barney")
+shift @array; # @array is now empty
+$o = shift @array # $o gets undef, @array is still empty
+unshift(@array, 5); # @array now has the one-element list (5)
+unshift @array, 4; # @array now has (4, 5)
+@others = 1..3;
+unshift @array, @others; # @array now has (1, 2, 3, 4, 5)
+```
+The same as `pop`, `shift` returns `undef` from an empty array.
 
