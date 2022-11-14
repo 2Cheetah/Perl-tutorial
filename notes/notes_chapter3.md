@@ -99,4 +99,10 @@ qw {
     /home/rootbeer/.ispell_english
 }
 ```
+List Assignment
+---------------
+In the same manner scalar values can be assigned to variables, list values can be assigned to list variables:
+```
+($fred, $barney, $dino) = ("flinstone", "rubble", undef)
+```
 
