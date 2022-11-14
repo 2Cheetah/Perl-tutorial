@@ -58,3 +58,14 @@ In case a list must store a sequence, it can be done as follows:
 (1.3..100.2) # the same list, both values are truncated
 (0, 2..6, 10, 12) # same as (0, 2, 3, 4, 5, 6, 10, 12)
 ```
+The range operator can only go "uphill":
+```
+(5..1) # creates empty list
+```
+The elements of list literal not necesserily must be constants, they can be expressions as well:
+```
+($m, 17) # the current value of $m and 17
+($m+$o, $p+$q)
+($m..$n) # range from $m to $n
+(0..$#rocks)
+```
