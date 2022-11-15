@@ -210,3 +210,29 @@ print "this is ${fred}[3]\n"; # this is right[3]
 print "this is $fred"."[3]\n"; # this is right[3]
 print "this is $fred\[3]\n"; # this is right[3]
 ```
+The `foreach` Control Structure
+-------------------------------
+```
+foreach $rock (qw/ bedrock slate lava /) {
+    print "One rock is $rock.\n; # Prints names of three rocks
+}
+```
+`$rock` is called _control variable_. It is not a copy of a value from an array, it is the array value itself. If the _control variable_ is modified, that means that respective array variable is modified.
+```
+@rocks = qw/ bedrock slate lava /;
+foreach $rock (@rocks) {
+    $rock = "\t$rock";
+    $rock .= "\n";
+}
+print "The rocks are:\n", @rocks;
+```
+In case name of _control variable_ matches already defined variable, it takes values of the array with `foreach` _control structure_ and after its finish gets value of the already defined variable.
+```
+$rock = 'shale';
+@rocks = qw/ bedrock slate lava /;
+foreach $rock (@rocks) {
+...
+}
+print "rock is still $rock\n"; # 'rock is still shale'
+```
+
