@@ -182,4 +182,31 @@ The fourth argument is a replacement list. It doesn't have to be the same size a
 @array = qw( pebbles dino fred barney betty );
 @removed = splice @array, 1, 0, qw( wilma ); # removes nothing, adds qw( wilma ). Eventually, @array = qw( pebbles wilma dino fred barney betty )
 ```
-
+Interpolating Arrays into Strings
+---------------------------------
+```
+@rocks = qw{ flinstone slate rubble };
+print "quartz @rocks limestone\n"; # prints five rocks separated by spaces
+```
+It must be not forgotten cases with emails:
+```
+$email = "ano@nymous.com"; # Perl will try to get array @nymous instead of email address
+$email = "ano\@nymous.com"; # correct way
+$email = 'ano@nymous.com'; #correct way as well
+```
+A single element of an array interpolates into its value:
+```
+@fred = qw( hello dolly );
+$y = 2;
+$x = "This is $fred[1]'s place";
+$x = "This is $fred[$y - 1]'s place"; # provides the same result as previous line
+```
+The index expression evaluates as an ordinary expression, as if it were outside a string. It is _not_ variable-interpolated first.
+```
+@fred = qw(eating rocks is wrong);
+$fred = "right";
+print "this is $fred[3]\n"; # this is wrong
+print "this is ${fred}[3]\n"; # this is right[3]
+print "this is $fred"."[3]\n"; # this is right[3]
+print "this is $fred\[3]\n"; # this is right[3]
+```
