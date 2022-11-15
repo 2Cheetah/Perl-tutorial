@@ -235,4 +235,17 @@ foreach $rock (@rocks) {
 }
 print "rock is still $rock\n"; # 'rock is still shale'
 ```
+Perl's Favourite Default: $\_
+-----------------------------
+_Control variable_ can be omitted in `foreach` control structure. In that case Perl automatically assigns default _control variable_ `$_`.
+```
+foreach (1..10) {
+    print "I can count to $_!\n";
+}
+```
+This default variable `$_` can be used in different cases, not only in `foreach` structure:
+```
+$_ = "Yabba dabba doo\n";
+print; # prints $_ by default
+```
 
