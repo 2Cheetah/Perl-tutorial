@@ -33,3 +33,23 @@ print "$#socks\n";
 foreach $sock (@socks) {
     print "$sock\n";
 }
+
+print "print \@rocks gives:\n";
+print @rocks;
+print "\n";
+
+print "print \$rocks gives:\n";
+print $rocks;
+print "\n";
+
+@barney = "hello" . ' ' . "world";
+print @barney;
+print "\n";
+
+
+@rocks = qw( talc quartz jade obsidian );
+print "How many rocks do you have?\n";
+print "I have ", @rocks, " rocks!\n"; # WRONG, prints names of rocks
+print "I have " . @rocks . " rocks!\n";
+print "I have ", scalar @rocks, " rocks!\n"; # Correct, gives a number
+
