@@ -248,4 +248,14 @@ This default variable `$_` can be used in different cases, not only in `foreach`
 $_ = "Yabba dabba doo\n";
 print; # prints $_ by default
 ```
+The `reverse` Operator
+----------------------
+`reverse` takes a list of values and returns that list in reverse order.
+```
+@fred = 6..10;
+@barney = reverse(@fred); # gets 10, 9, 8, 7, 6
+@wilma = reverse 6..10;
+@fred = reverse @fred; # puts the result back into the original array
+```
+`reverese` doesn't affect the initial array. If the result is not assigned anywhere, it's useless.
 
