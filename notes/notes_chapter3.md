@@ -288,4 +288,77 @@ foreach $index ( 0..$#rocks ) {
     print "$index: $rocks[$index]\n";
 }
 ```
-
+Scalar and List Context
+-----------------------
+_Context_ means that depending on it Perl's behaviour will be different.
+Expressions in Perl always return the appropriate value for their context.
+```
+@people = qw( fred barney betty );
+@sorted = sort @people; # list content: barney, betty, fred
+$number = 42 + @people; # scalar context: 42 + 3 gives 45
+```
+```
+@list = @people; # a list of three
+$n = @people; # the number 3
+```
+### Using List-Producing Expressions in Scalar Context
+`reverse` in a list context returns reversed list, but in a scalar context it returns reversed string.
+```
+@backwards = reverse qw/ yabba dabba doo /; # gives doo, dabba, yabba
+$backwards = reverse qw/ yabba dabba doo /; # gives oodabbadabbay
+```
+```
+$fred = something; # scalar context
+@pebbles = something; # list context
+($wilma, $betty) = something; # list context
+($dino) = something; # still list context
+```
+Scalar context:
+```
+$fred = something; # scalar context
+$fred[3] = something; # scalar context
+123 + something # scalar context
+something + 645
+if (something) {...}
+while (something) {...}
+$fred[something] = something;
+```
+List context:
+```
+@fred = something;
+($fred, $barney) = something;
+($fred) = something;
+push @fred, something;
+foreach $fred (something) {...}
+sort something
+reverse something
+print something
+```
+### Using Scalar-Producing Expressions in List Context
+```
+@fred = 6 * 7; # gets the one-element list (42)
+@barney = "hello" . ' ' . "world";
+```
+### Forcing Scalar Context
+To force Perl use _Scalar Context_ instead of _List Context_ function `scalar` can be used:
+```
+@rocks = qw( talc quartz jade obsidian );
+print "How many rocks do you have?\n";
+print "I have ", @rocks, "rocks!\n"; # WRONG, prints names of rocks
+print "I have ", scalar @rocks, "rocks!\n"; # Correct, gives a number
+```
+### \<STDIN\> in List Context
+`<STDIN>` can return not only a line in scalar context, but in list context as well it returns _all_ of remaining lines up to the end-of-file.
+```
+@lines = <STDIN>; # read standard input in list context
+```
+In Linux to stop line insertion you need to press Ctrl-D. On DOS/Windows systems it is performed with Ctrl-Z.
+Each element in the list is a string which ends with `/n` newline character. `chomp` in that case can be used with the created array:
+```
+@lines = <STDIN>; # Read all the lines
+chomp(@lines); # discard all the newline characters
+```
+But the more common way to write that is with code similar to what you used earlier:
+```
+chomp(@lines = <STDIN>); # Read the lines, not the newlines
+```
