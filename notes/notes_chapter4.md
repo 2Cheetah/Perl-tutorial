@@ -42,4 +42,19 @@ sub larger_of {
     }
 }
 ```
+Arguments
+---------
+```
+$n = &man(10, 15);
+```
+Perl automatically stores the parameter list (another name for argument list) in the special array variable named `@_` for the duration of the subroutine. That means that first parameter is `$_[0]`, second argument is `$_[1]` and so on. With the arguments subroutine max can look like:
+```
+sub max {
+    if ($_[0] > $_[1]) {
+        $_[0];
+    } else {
+        $_[1];
+    }
+}
+```
 
