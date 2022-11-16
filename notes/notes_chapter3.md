@@ -258,4 +258,18 @@ The `reverse` Operator
 @fred = reverse @fred; # puts the result back into the original array
 ```
 `reverese` doesn't affect the initial array. If the result is not assigned anywhere, it's useless.
+The `sort` Operator
+-------------------
+The `sort` operator takes a list of values and sorts them in the internal character ordering. For strings, that would be in code point order. It is a strange place where all of the capital letters come before all of the lowercase letters, where the numbers come before letters. It's a _default_ behavior.
+```
+@rocks = qw/ bedrock slate rubble granite /;
+@sorted = sort(@rocks);
+@back = reverse sort @rocks;
+@rocks = sort @rocks;
+@numbers = sort 97..102; # gets 100, 101, 102, 97, 98, 99
+```
+`sort` doesn't affect original array. To make an array sorted, it's needed to assign sorted array to itself.
+```
+@rocks = sort @rocks;
+```
 
