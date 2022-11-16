@@ -1,0 +1,1 @@
+{"version":5,"vars":[{"name":"warnings","containerName":"","kind":2,"line":1},{"name":"$pi","containerName":null,"kind":13,"line":3},{"kind":13,"line":4,"containerName":null,"name":"$circumference"},{"name":"$pi","containerName":null,"line":4,"kind":13}]}
