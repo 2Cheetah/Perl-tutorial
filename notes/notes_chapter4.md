@@ -130,3 +130,22 @@ The use strict Pragma
 ---------------------
 The `use strict` pragma tells Perl's internal compiler that it should enforce some good programming rules for the rest of this block or source file. Implicitly stating a version of Perl means that strict pragma applies as well.
 Most people recommend that programs that are longer than a screenful of text generally need `use strict`.
+
+The `return` Operator
+---------------------
+The `return` operator immideately returns value and therefore stops subroutine execution.
+```
+my @names = qw/ fred barney betty dino wilma pebbles bamm-bamm /;
+my $result = &which_element_is("dino", @names);
+
+sub which_element_is {
+    my($what, @array) = @_;
+    foreach (0..$#array) {
+        if ($what eq #array[$_]) {
+            return $_;
+        }
+    }
+    -1; # element not found
+}
+```
+
