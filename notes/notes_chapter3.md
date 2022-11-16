@@ -272,4 +272,20 @@ The `sort` operator takes a list of values and sorts them in the internal charac
 ```
 @rocks = sort @rocks;
 ```
+The `each` Operator
+-------------------
+`each` can be used with arrays and hashes. It returns _index_ and _value_.
+```
+@rocks = qw/ bedrock slate rubble granite /;
+while( ( $index, $value ) = each @rocks ) {
+    print "$index: $value\n";
+}
+```
+The same can be done with `foreach`.
+```
+@rocks = qw/ bedrock slate rubble granite /;
+foreach $index ( 0..$#rocks ) {
+    print "$index: $rocks[$index]\n";
+}
+```
 
