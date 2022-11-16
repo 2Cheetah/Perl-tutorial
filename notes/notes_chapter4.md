@@ -42,6 +42,7 @@ sub larger_of {
     }
 }
 ```
+
 Arguments
 ---------
 ```
@@ -58,3 +59,35 @@ sub max {
 }
 ```
 
+Private Variables in Subroutines
+--------------------------------
+Private variables calles _lexical variables_ can be created at any time with `my` operator.
+```
+sub max {
+    my($m, $n);
+    ($m, $n) = @_;
+    if ($m > $n) { $m } else { $n }
+}
+```
+These variables are private (or _scoped_) to the enclosing block. Previous code can be even more shortened:
+```
+    my($m, $n) = @_;
+```
+
+Variable-Length Parameter Lists
+-------------------------------
+### A better \&max Routine
+```
+$maximum = &max(3, 5, 10, 4, 6);
+
+sub max {
+    my($max_so_far) = shift @_;
+    foreach (@_) {
+        if ($_ > $max_so_far) {
+            $max_so_far = $_;
+        }
+    }
+    $max_so_far;
+}
+```
+This code uses what has often been called the _high-water mark_ algorithm.
