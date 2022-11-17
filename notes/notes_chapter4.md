@@ -228,3 +228,51 @@ sub next_fibonacci {
     print "Next Fibonacci number is: $numbers[-1]\n";
 }
 ```
+
+Subroutine Signatures
+---------------------
+This is yet experimental feature. To enable it:
+```
+use v5.20;
+use experimental qw(signatures);
+```
+Before:
+```
+sub max {
+    my($m, $n);
+    ($m, $n) = @_;
+    if ($m > $n) { $m } else { $n }
+}
+```
+Now:
+```
+sub max ( $m, $n ) {
+    if ($m > $n) { $m } else { $n }
+}
+```
+To be able to take more arguments, using that approach, it can be done as follows:
+```
+sub max ( $max_so_far, @others ) {
+    foreach @others {
+        if ($_ > $max_so_far) { $max_so_far = $_ }
+    }
+    $max_so_far;
+}
+```
+Too few arguments can be bypassed with defualt values as follows:
+```
+sub list_from_fred_to_barney ( $fred = 0, $barney = 7 ) {
+    if ($fred < $barney) {$fred..$barney} else {reverse $barney..$fred}
+}
+
+my @defaults = list_from_fred_to_barney();
+my @default_end = list_from_fred_to_barney(17);
+```
+Optional arguments can be added with `$=`:
+```
+sub one_ot_two_args ($first, $=) {...}
+```
+To create a subroutine with exactly zero parameters, it is as easy as:
+```
+sub PI () { 3.1415926 }
+```
