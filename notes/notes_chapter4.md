@@ -276,3 +276,15 @@ To create a subroutine with exactly zero parameters, it is as easy as:
 ```
 sub PI () { 3.1415926 }
 ```
+
+Prototypes
+----------
+Prototype is older Perl feature that allows telling Perl parser how to interpret source. It is a primitive form of _signatures_.
+```
+sub sum ($$) { $_[0] + $_[1] }
+```
+To use _prototypes_ together with signatures:
+```
+sub sum :prototype($$) { $_[0] + $_[1] }
+```
+
