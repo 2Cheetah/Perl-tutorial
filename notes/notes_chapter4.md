@@ -1,6 +1,6 @@
 Chapter 4. Subroutines
 ======================
-_Subroutine_ is a user-defined function. The name of a subroutine is another Perl identifier (letters, digits, underscores, but can't start with a digit) with a sometimes-optional ampersand &amp in front.
+_Subroutine_ is a user-defined function. The name of a subroutine is another Perl identifier (letters, digits, underscores, but can't start with a digit) with a sometimes-optional ampersand &amp; in front.
 
 Defining a Subroutine
 ---------------------
@@ -149,3 +149,82 @@ sub which_element_is {
 }
 ```
 
+Omitting the Ampersand
+----------------------
+In case Perl can work out that it is a subroutine, the &amp; is not needed. That happens e.g. when the subroutine definition was done before invoking it. As it is built-in function.
+```
+my @cards = shuffle(@deck_of_cards); # No & necesary on &shuffle
+```
+```
+sub division {
+    $_[0] / $_[1];
+}
+
+my $quotient = division 355, 113;
+```
+In case subroutine name is the same as built-in function, then &amp; is a must.
+```
+sub chomp {
+    print "Munch, munch!\n";
+}
+&chomp; # That ampersand is not optional
+```
+
+Nonscalar Return Values
+-----------------------
+Subroutine called in a list context can return a list of values. `wantarray` function lets easily write subroutines with specific list or scalar context.
+```
+sub list_from_fred_to_barney {
+    if ($fred < $barney) {
+        $fred..$barney;
+    } else {
+        reverse $barney..$fred;
+    }
+}
+
+$fred = 11;
+$barney = 6;
+@c = &list_from_fred_to_barney; # @c gets (11, 10, 9, 8, 7, 6)
+```
+
+Persistent, Private Variables
+-----------------------------
+With `state` private variables scoped to the subroutine can be kept between calls.
+Declaring our variable with `state` tells Perl to retain the variable's value between calles to the subroutine and to make the variable private to the subroutine.
+```
+sub marine {
+    state $n = 0; # private, persistent variable $n
+    $n += 1;
+    print "Hello, sailor number $n!\n";
+}
+```
+`state` can be used with any variable type, not only _scalar_.
+```
+use v5.10;
+
+running_sum( 5, 6 );
+running_sum( 1..3 );
+running_sum( 4 );
+
+sub running_sum {
+    state $sum = 0;
+    state @numbers;
+
+    foreach my $number (@_) {
+        push @numbers, $number;
+        $sum += $number;
+    }
+    
+    say "The sum of (@numbers) is $sum";
+}
+```
+Fibonacci numbers interpretation:
+```
+use v5.28;
+
+sub next_fibonacci {
+    state @numbers = (0, 1);
+    push @numbers, $numbers[-2] + $numbers[-1];
+    print "Next Fibonacci number is: $numbers[-1]\n";
+}
+```
