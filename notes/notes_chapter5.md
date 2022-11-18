@@ -188,3 +188,53 @@ _Standard error stream_ `STDERR`. By default, the errors will generally go to th
 $ netstat | ./your_program 2>/tmp/my_errors
 ```
 
+Opening a Filehandle
+--------------------
+There are three _filehandles_ which were presented previously: `STDIN`, `STDOUT`, `STDERR`. To use other _filehandles_ `open` operator is to be used, to ask the operating system to open the connection between a program and the outside world. For instance:
+```
+open CONFIG, 'dino';
+open CONFIG, '<dino';
+open BEDROCK, '>fred';
+open LOG, '>>logfile';
+```
+The first one opens a _filehandle_ called `CONFIG` to a file called _dino_.
+The second line does the same as the first, but less-than sign explicitly says "use this filename for input".
+A greater-than sign is used in shell redirection to send the output to a _new_ file called _fred_.
+Double greater-than sign shows that a file is opened for _appending_ data.
+```
+my $selected_output = 'my_output';
+open LOG, "> $selected_output";
+```
+It is worth noting the space after the greater-than sign. Perl ignores this, but it keeps unexpected things from happening if `$selected_output` were `">passwd"`, for example (which would make an append instead of a write).
+In modern versions of Perl it can be written a "three-argument" `open`:
+```
+open CONFIG, '<', 'dino';
+open BEDROCK, '>', $file_name;
+open LOG, '>>', &logfile_name();
+```
+The second argument is _the mode_.
+Another advantage of the three-argument approach is that an encoding can be specified.
+```
+open CONFIG, '<:encoding(UTF-8)', 'dino';
+```
+Same goes for writing:
+```
+open BEDROCK, '>:encoding(UTF-8)', $file_name;
+open LOG, '>>:encoding(UTF-8)', &logfile_name();
+```
+There's a shortcut for `encoding(UTF-8)` `:utf8'. But using `encoding(UTF-8)`, you ensure that the data is encoded correctly. The `:utf8` takes whatever it gets and marks it as a _UTF-8_ string even if it isn't, which might cause problems later.
+You can get a list of all of the encodings that perl understands with a Perl one-liner:
+```
+$ perl -MEncode -le "print for Encode->encodings(':all')"
+```
+DOS line endings, where each line neds with a carriage-return/linefeed (CR-LF) pair (also normally written as "\r\n"). Unix line endings only use the newlines. When you try to use one on the other, odd things can happen. The `:crlf` encoding takes care of that. When you want to ensure that you get a CR-LF at the end of each line, you can set that encoding on the file:
+```
+open BEDROCK, '>:crlf', $file_name;
+```
+Although if there's already a CR-LF, it will be doubled.
+To read a file with DOS line endings:
+```
+open BEDROCK, '<:crlf', $file_name;
+```
+With that line Perl will translate all CR-LFs to just newlines.
+
