@@ -222,7 +222,7 @@ Same goes for writing:
 open BEDROCK, '>:encoding(UTF-8)', $file_name;
 open LOG, '>>:encoding(UTF-8)', &logfile_name();
 ```
-There's a shortcut for `encoding(UTF-8)` `:utf8'. But using `encoding(UTF-8)`, you ensure that the data is encoded correctly. The `:utf8` takes whatever it gets and marks it as a _UTF-8_ string even if it isn't, which might cause problems later.
+There's a shortcut for `encoding(UTF-8)` `:utf8`. But using `encoding(UTF-8)`, you ensure that the data is encoded correctly. The `:utf8` takes whatever it gets and marks it as a _UTF-8_ string even if it isn't, which might cause problems later.
 You can get a list of all of the encodings that perl understands with a Perl one-liner:
 ```
 $ perl -MEncode -le "print for Encode->encodings(':all')"
@@ -257,4 +257,46 @@ Wide character in print at test line 1.
 Same goes for input handles.
 ```
 binmode STDIN, ':encoding(UTF-8)';
+```
+
+Bad Filehandles
+---------------
+Actually, Perl can't open a file all by itself. It asks for the operting system to let it open a file. It you try to read from a bad filehandle (that is, a filehandle that isn't properly open or a closed network connection), you'll see an immidiate end-of-file.
+With `warning` pragma or `-w` flag Perl will be able to throw a warning when it sees a bad filehandle. But even before that, `open` always tells if it succeeded or failed by returning _true_ for success or _false_ for failure.
+```
+my $success = open LOG, '>>', 'logfile';
+if (! $success) {
+    # The open failed
+    ...
+}
+```
+It can be done like that, but there's a better way, shown below.
+
+Closing a Filehandle
+--------------------
+When you are finished with a filehandle, you may close it with the `close` operator
+```
+close BEDROCK;
+```
+Many simple Perl programs don't bother with `close`. But it's there if you want to be tidy, with one `close` for every `open`. In general, it's best to close each filehandle soon after you're done with it, though the end of the program often arrives soon enough.
+
+Fatal Errors with `die`
+-----------------------
+When a fatal error happens inside Perl (for example, if you divide by zero, use an invalid regular expression, or call a subroutine that you haven't declared), your program stops with an error message telling why. But this functionality is available to you with `die` function, to make your own fatal errors.
+The `die` function prints out the message you give it (to the standard error stream, where such messages should go) and makes sure that the program exits with a _nonzero_ exit status. Traditionally `0` stands for _success_. Previous example can be rewritten in the following way:
+```
+if ( ! open LOG, '>>', 'logfile' ) {
+    die "Cannot create logfile: $!";
+}
+```
+`$!` is human-readable complaint from the system. It holds a useful value only immideately after a _failed_ system request.
+Additionally, `die` appends the Perl program name and line number:
+```
+Cannot create logfile: permission denied at your_program line 1234.
+```
+Another way `die` can be used is with a trailing newline on the message:
+```
+if (@ARGV < 2) {
+    die "Not enough arguments\n";
+}
 ```

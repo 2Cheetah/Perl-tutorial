@@ -1,1 +1,0 @@
-{"vars":[{"containerName":"","name":"warnings","kind":2,"line":1},{"containerName":null,"name":"$radius","kind":13,"line":4},{"kind":13,"line":5,"name":"$pi","containerName":null},{"kind":13,"line":6,"containerName":null,"name":"$circumference"},{"line":6,"kind":13,"containerName":null,"name":"$pi"},{"name":"$radius","containerName":null,"line":6,"kind":13}],"version":5}
