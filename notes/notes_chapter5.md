@@ -238,3 +238,23 @@ open BEDROCK, '<:crlf', $file_name;
 ```
 With that line Perl will translate all CR-LFs to just newlines.
 
+Binmoding Filehandles
+---------------------
+In older Perl versions, if you didn't want to translate line endings, you used `binmode` to turn off line-ending processing:
+```
+binmode STDOUT; # don't translate line endings
+binmode STDERR; # same
+```
+Perl 5.6 called it a _discipline_, but that name changed in favor of _layer_.
+If you want to output Unicode to STDOUT, you want to ensure that STDOUT knows how to handle what it gets:
+```
+binmode STDOUT, ':encoding(UTF-8)';
+```
+If you don't do that, you might get a warning, even without turning on warnings, because STDOUT doesn't know how you'd like to encode it:
+```
+Wide character in print at test line 1.
+```
+Same goes for input handles.
+```
+binmode STDIN, ':encoding(UTF-8)';
+```
