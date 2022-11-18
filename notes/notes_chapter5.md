@@ -110,3 +110,54 @@ When there are no parentheses, `print` is a list operator, printing all of the i
 ```
 ( print (2+3) ) * 4;
 ```
+
+Formatted Output with `printf`
+------------------------------
+```
+printf "Hello, %s; your password expires in %d days!\n", $user, $days_to_die;
+```
+The string holds number of _conversions_. Each _conversion_ begins with \% sign and ends with a letter.
+`%g` to print number.
+```
+printf "%g %g %g\n", 5/2, 51/17, 51 ** 17; # 2.5 3 1.0683e+29
+```
+`%d` means decimal integer truncated as needed.
+```
+printf "in %d days!\n", 17.85; # in 17 days!
+```
+`%x` for hexadecimal, `%o` for octal.
+```
+printf "in 0x%x days!\n", 17; # in 0x11 days!
+printf "in 0%o days!\n", 17; # in 021 days!
+```
+In Perl, `printf` is mostly used for columnar data. If the data won't fit, the field will generally be expanded as needed:
+```
+printf "%6d\n", 42; # output like ''''42 (where ' symbol is a space)
+printf "%2d\n", 2e3 + 1.95; # 2001
+```
+`%s` means a string.
+```
+printf "%10s\n", "wilma"; # looks like '''''wilma
+printf "%-15s\n", "flinstone"; # looks like flinstone'''''
+```
+`%f` means floating-point. Can round off its output as needed.
+```
+printf "%12f\n", 6*7 + 2/3; # looks like '''42.666667
+printf "%12.3f\n", 6 * 7 + 2/3; # looks like ''''''42.667
+printf "%12.0f\n",  6 * 7 + 2/3; # looks like ''''''''''43
+```
+`%%` to print a real percent sign
+```
+printf "Monthly interest rate: %.2f%%\n", 5.25/12; # the value looks like 0.44%
+```
+Instead of specifying number of characters with a `%` sign, it can be done with `*`.
+```
+printf "%*s", 10, "wilma"; # looks like '''''wilma
+```
+Double `*` to get the total width and the number of decimal places to format a float.
+```
+printf "%*.*f", 6, 2, 3.1415926; # looks like ''3.14
+printf "%*.*f", 6, 3, 3.1415926; # looks like '3.142
+```
+`sprintf` in perldoc for more documentation.
+
