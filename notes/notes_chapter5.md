@@ -173,3 +173,18 @@ This can even be combined:
 ```
 printf "The items are:\n" . ("$10s\n" x @items), @items;
 ```
+
+Filehandles
+-----------
+A _filehandle_ is the name in a Perl program for an I/O connection between your Perl process and the outside world. That is, it's the name of a _connection_, not necessarily the name of a file.
+The _filehanles_ are named like other Perl identifiers: letters, digits, and underscores (but not started with a digit). Recommendation from Larry to use all uppercase letters for _filehandle_.
+There are six special _filehandle_ names that Perl already uses for its own purposes: `STDOUT`, `STDIN`, `STDERR`, `DATA`, `ARGV`, `ARGVOUT`.
+At no extra charge, the program will work in a _pipeline_.
+```
+$ cat fred barney | sort | ./your_program | grep something | lpr
+```
+_Standard error stream_ `STDERR`. By default, the errors will generally go to the user's display screen, but the user may send the errors to a file with a shell command like this one:
+```
+$ netstat | ./your_program 2>/tmp/my_errors
+```
+
