@@ -161,3 +161,15 @@ printf "%*.*f", 6, 3, 3.1415926; # looks like '3.142
 ```
 `sprintf` in perldoc for more documentation.
 
+Arrays and `printf`
+-------------------
+```
+my @items = qw( wilma dino pebbles );
+my $format = "The items are:\n" . ("%10s\n x @items");
+## print "the format is >>$format<<\n"; # for debugging
+printf $format, @items;
+```
+This can even be combined:
+```
+printf "The items are:\n" . ("$10s\n" x @items), @items;
+```
