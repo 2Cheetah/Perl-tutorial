@@ -300,3 +300,40 @@ if (@ARGV < 2) {
     die "Not enough arguments\n";
 }
 ```
+
+Warning Message with `warn`
+---------------------------
+The `warn` function works just like `die` does, except for the last step - it doesn't actually quit the program.
+
+Automatically `die`-ing
+-----------------------
+`autodie` pragma. To avoid using `die` everytime handling `open` error.
+```
+use autodie;
+
+open LOG, '>>', 'logfile';
+```
+
+Using Filehandles
+-----------------
+Once _filehandle_ is open for reading, you can read lines from it just like you can read from standard input with `STDIN`.
+```
+if ( ! open PASSWD, "/etc/passwd") {
+    die "How did you get logged in? ($!)";
+}
+
+while (<PASSWD>) {
+    chomp;
+    ...
+}
+```
+You can use a filehandle `open` for writing or appending with `print` or `printf`, appearing immideately after the keyword but before the list of arguments.
+```
+print LOG "Captain's log, stardate 3.1415\n"; # output goes to LOG
+printf STDERR "%d percent complete.\n", $done/$total * 100;
+```
+Another way to write the same code is to put everything in parentheses.
+```
+print (LOG "Captain's log, stardate 3.1415\n"); # output goes to LOG
+printf (STDERR "%d percent complete.\n", $done/$total * 100);
+```
