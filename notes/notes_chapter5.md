@@ -337,3 +337,97 @@ Another way to write the same code is to put everything in parentheses.
 print (LOG "Captain's log, stardate 3.1415\n"); # output goes to LOG
 printf (STDERR "%d percent complete.\n", $done/$total * 100);
 ```
+
+Changing the Default Output Filehandle
+--------------------------------------
+By default, if you don't give a filehandle to `print` (`printf`), the output will go to _STDOUT_. In the following example output goes to `BEDROCK`:
+```
+select BEDROCK;
+print "I hope Mr. Slate doesn't find out about this.\n";
+print "Wilma!\n";
+```
+To flush buffer after each operator a special variable `$|` must be set to 1.
+```
+select LOG;
+$| = 1;
+select STDOUT;
+...
+print LOG "This gets written to the LOG at once!\n";
+```
+
+Reopening a Standard Filehandle
+-------------------------------
+In case of reopening of a filehandle, e.g. FRED, if it was previously opened, first opened filehandle will be closed automatically.
+In case error is to be sent to a file rather than to a STDERR:
+```
+# Send errors to my private error log
+if ( ! open STDERR, ">>/home/barney/.error_log") {
+    die "Can't open error log for append: $!";
+}
+```
+
+Output with `say`
+-----------------
+`say` is the same as `print` but adds newline symbol automatically to the end of the line.
+```
+use v5.10;
+
+print "Hello!\n";
+say "Hello!";
+```
+Same goes with variables:
+```
+use v5.10;
+
+my $name = 'Fred';
+print "$name\n";
+print $name, "\n";
+say $name;
+```
+To interpolate an array, quotes are still needed:
+```
+use v5.10;
+
+my @array = qw( a b c d );
+say @array; # "abcd\n"
+say "@array"; # "a b c d\n"
+```
+With filehandles:
+```
+use v5.10;
+
+say BEDROCK "Hello!";
+```
+
+Filehandles in a Scalar
+-----------------------
+If you use a scalar variable without a value in place of the bareword in `open`, your filehandle wnds up in the variable. People typically do this with a lexical variable since that ensures that you get a variable without a value; some like to put a `_fh` on the end of these variable names to remind themselves that they are using it for a filehandle:
+```
+my $rocks_fh;
+open $rocks_fh, '<', 'rocks.txt' or die "Couldn't open rocks.txt: $!";
+```
+Those two statements can even be combined:
+```
+open my $rocks_fh, '<', 'rocks.txt' or die "Could not open rocks.txt: $!";
+```
+```
+while ( <$rocks_fh> ) {
+    chomp;
+    ...
+}
+```
+This approach works as well with output filehandles too:
+```
+open my $rocks_fh, '>>', 'rocks.txt' or die "Could not open rocks.txt: $!";
+foreach my $rock ( qw( slate lava granite ) ) {
+    say $rocks_fh $rock
+}
+
+print $rocks_fh "limestone\n";
+close $rocks_fh;
+```
+To tell Perl that `$rocks_fh` is a filehandle and not just a variable to print, it must be surrounded by curly braces:
+```
+print { $rocks[0] } "sandstnoe\n";
+print { $rocks_fh } $_;
+```
