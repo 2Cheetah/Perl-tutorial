@@ -58,14 +58,71 @@ For convenience, you can convert a hash into a list and back again. Assigning to
 
 Although any list expression can be used, it must have an even number of elements, because the hash is made of _key-value pairs_.
 The value of the hash (in a list context) is a simple list of key-value pairs:
+
 ```
 my @any_array = %some_hash;
 ```
+
 Perl calls this _unwinding_ the hash - turningn it bach into a list of key-value pairs. Of course, the pairs won't necessarily be in the same order as the original list:
+
 ```
 print "@any_array\n";
 # might give something like:
 # betty bye (and a newline) wilma 1.72e+30 foo 35 2.5 hello bar 12.4
 ```
+
 In scalar context, a hash retirns the number of keys in the hash: `my $count = %hash;`.
 Even though the order of key-value pairs is jumbled, each key is followed by its value.
+
+## Hash Assignment
+
+Hash can be assigned by copying from another hash (doesn't make much sense though):
+
+```
+my %new_hash = %old_hash;
+```
+
+It's more common to transform the hash in some way, though. For example, you could make an inverse hash:
+
+```
+my %inverse_hash = reverse %any_hash;
+```
+
+## The Big Arrow
+
+Big arrow `=>` used to visually distinguish key and values:
+
+```
+my %last_name = ( # a hash may be a lexical variable
+  'fred' => 'flinstone',
+  'dino' => undef,
+  'barney' => 'rubble',
+  'betty' => 'rubble',
+);
+```
+
+You may omit the quote marks on some hash keys when you use the fat comma, which automatically quotes the values to its left:
+
+```
+my %last_name = (
+  fred => 'flinstone',
+  dino => undef,
+  barney => 'rubble',
+  betty => 'rubble',
+);
+```
+
+But quotes can be omitted not for any key:
+
+```
+my %last_name = (
+  + => 'flinstone', # WRONG! Compilation error!
+);
+```
+
+If the hash key is made up of nothing but letters, digits, and underscores (without starting with a digit), you _may_ be able to omit the quote marks.
+Same approach can be used when calling for a value with a key: `$score{fred}`. If there's anything inside the curly braces besides a _bareword_, Perl will interpret it as an expression.
+
+```
+$hash{ bar.foo } = 1; # that's the key 'barfoo'
+```
